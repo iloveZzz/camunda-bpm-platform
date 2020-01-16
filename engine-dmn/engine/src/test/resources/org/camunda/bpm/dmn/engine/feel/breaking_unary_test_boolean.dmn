@@ -6,24 +6,24 @@
     </extensionElements>
     <decisionTable id="decisionTable_1">
       <input id="input_1">
-        <inputExpression id="inputExpression_1" typeRef="string">
-          <text>input</text>
+        <inputExpression id="inputExpression_1" typeRef="boolean" expressionLanguage="juel">
+          <text>${true}</text>
         </inputExpression>
       </input>
       <output id="output_1" typeRef="string" />
       <rule id="DecisionRule_1fhucab">
-        <inputEntry id="UnaryTests_0kpj628">
-          <text>'Hello World'</text>
+        <inputEntry id="UnaryTests_0kpj628" expressionLanguage="feel">
+          <text>8 &gt; 7</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1ymvc87">
+        <outputEntry id="LiteralExpression_1ymvc87" expressionLanguage="juel">
           <text>"foo"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0qko49g">
-        <inputEntry id="UnaryTests_0nogxjd">
-          <text>'Hello Dog'</text>
+        <inputEntry id="UnaryTests_0nogxjd" expressionLanguage="feel">
+          <text>8 &lt;= 7</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_19ehhrb">
+        <outputEntry id="LiteralExpression_19ehhrb" expressionLanguage="juel">
           <text>"bar"</text>
         </outputEntry>
       </rule>

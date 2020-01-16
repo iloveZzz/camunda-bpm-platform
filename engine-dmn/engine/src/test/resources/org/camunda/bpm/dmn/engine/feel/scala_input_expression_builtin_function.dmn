@@ -6,25 +6,25 @@
     </extensionElements>
     <decisionTable id="decisionTable_1">
       <input id="input_1">
-        <inputExpression id="inputExpression_1" typeRef="string">
-          <text>"foo"</text>
+        <inputExpression id="inputExpression_1" typeRef="boolean" expressionLanguage="feel">
+          <text>date1 &gt; date and time("2015-11-30T12:00:00")</text>
         </inputExpression>
       </input>
-      <output id="output_1" typeRef="date" />
+      <output id="output_1" typeRef="string" />
       <rule id="DecisionRule_1rmq2b6">
-        <inputEntry id="UnaryTests_1qviji0">
-          <text>"bar"</text>
+        <inputEntry id="UnaryTests_1qviji0" expressionLanguage="feel">
+          <text>true</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1q3jh5z" expressionLanguage="feel">
-          <text>date and time("2019-08-08T22:22:22")</text>
+          <text>"foo"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1jrp8o4">
-        <inputEntry id="UnaryTests_0g8ovnf">
-          <text>"foo"</text>
+        <inputEntry id="UnaryTests_0g8ovnf" expressionLanguage="feel">
+          <text>false</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_19hblon" expressionLanguage="feel">
-          <text>date and time("2019-08-08T22:22:22")</text>
+          <text>"bar"</text>
         </outputEntry>
       </rule>
     </decisionTable>

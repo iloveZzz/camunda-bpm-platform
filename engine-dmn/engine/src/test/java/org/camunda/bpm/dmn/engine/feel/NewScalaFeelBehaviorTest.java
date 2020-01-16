@@ -16,18 +16,12 @@
  */
 package org.camunda.bpm.dmn.engine.feel;
 
-import org.camunda.bpm.dmn.engine.DmnDecisionResult;
-import org.camunda.bpm.dmn.engine.DmnEngine;
 import org.camunda.bpm.dmn.engine.DmnEngineConfiguration;
 import org.camunda.bpm.dmn.engine.impl.DefaultDmnEngineConfiguration;
 import org.camunda.bpm.dmn.engine.test.DecisionResource;
 import org.camunda.bpm.dmn.engine.test.DmnEngineTest;
-import org.camunda.bpm.dmn.feel.impl.FeelException;
-import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.Variables;
-import org.camunda.feel.integration.CamundaFeelEngine;
 import org.camunda.feel.integration.CamundaFeelEngineFactory;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -37,12 +31,6 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
-import static org.camunda.bpm.dmn.engine.feel.FeelBehaviorTest.DATE_TABLE_INPUT_CLAUSE_TYPE_NON_CONVERSION;
-import static org.camunda.bpm.dmn.engine.feel.FeelBehaviorTest.DMN;
-import static org.camunda.bpm.dmn.engine.feel.FeelBehaviorTest.DMN_12;
-import static org.camunda.bpm.dmn.engine.feel.FeelBehaviorTest.EMPTY_EXPRESSIONS_DMN;
-import static org.camunda.bpm.dmn.engine.util.DmnExampleVerifier.assertExample;
 
 public class NewScalaFeelBehaviorTest extends DmnEngineTest {
 
@@ -56,58 +44,51 @@ public class NewScalaFeelBehaviorTest extends DmnEngineTest {
     return configuration;
   }
 
-  protected CamundaFeelEngine scalaFeelEngine;
-
-  @Before
-  public void assignEngines() {
-    scalaFeelEngine = new CamundaFeelEngine();
-  }
-
   @Test
-  @DecisionResource(resource = "DateConversionTable_InputExpression.dmn11.dmn")
-  public void shouldEvaluateInputExpression() {
+  @DecisionResource(resource = "scala_input_expression.dmn")
+  public void shouldEvaluateInputExpression_Simple() {
     // given
     getVariables()
       .putValue("date1", new Date())
       .putValue("date2", new Date());
+
     // when
-    String foo = evaluateDecision().getSingleEntry();
+    String result = evaluateDecision().getSingleEntry();
 
     // then
-    assertThat(foo).isEqualTo("bar");
+    assertThat(result).isEqualTo("bar");
   }
 
   @Test
-  @DecisionResource(resource = "DateConversionTable_InputExpressionDateAndTime.dmn11.dmn")
-  public void shouldEvaluateInputExpression2() {
+  @DecisionResource(resource = "scala_input_expression_builtin_function.dmn")
+  public void shouldEvaluateInputExpression_BuiltInFunction() {
     // given
     getVariables()
       .putValue("date1", new Date());
 
-
     // when
-    String foo = evaluateDecision().getSingleEntry();
+    String result = evaluateDecision().getSingleEntry();
 
     // then
-    assertThat(foo).isEqualTo("foo");
+    assertThat(result).isEqualTo("foo");
   }
 
   @Test
-  @DecisionResource(resource = DATE_TABLE_INPUT_CLAUSE_TYPE_NON_CONVERSION)
+  @DecisionResource(resource = "scala_compare_date_untyped.dmn")
   public void shouldEvaluateJodaDateWithTable_NonInputClauseType() {
     // given
     getVariables()
       .putValue("date1", org.joda.time.LocalDateTime.now());
 
     // when
-    String foo = evaluateDecision().getSingleEntry();
+    String result = evaluateDecision().getSingleEntry();
 
     // then
-    assertThat(foo).isEqualTo("not ok");
+    assertThat(result).isEqualTo("not ok");
   }
 
   @Test
-  @DecisionResource(resource = "FeelLegacy_compareDate_withTimeZone_non_typed.dmn")
+  @DecisionResource(resource = "scala_compare_date_with_time_zone_non_typed.dmn")
   public void shouldEvaluateTimezoneComparisonWithZonedDateTime() {
     variables.putValue("date1", ZonedDateTime.now());
 
@@ -117,76 +98,8 @@ public class NewScalaFeelBehaviorTest extends DmnEngineTest {
   }
 
   @Test
-  @DecisionResource(resource = EMPTY_EXPRESSIONS_DMN, decisionKey = "decision2")
-  public void testFailFeelUseOfEmptyInputExpression() {
-    try {
-      evaluateDecisionTable(dmnEngine);
-      failBecauseExceptionWasNotThrown(FeelException.class);
-    }
-    catch (FeelException e) {
-      assertThat(e).hasMessageContaining("failed to evaluate expression '10': no variable found for name 'cellInput'");
-    }
-  }
-
-  @Test
-  @DecisionResource(resource = "org/camunda/bpm/dmn/engine/el/ExpressionLanguageTest.script.dmn")
-  public void testFeelExceptionDoesNotContainJuel() {
-    try {
-      assertExample(dmnEngine, decision);
-      failBecauseExceptionWasNotThrown(FeelException.class);
-    }
-    catch (FeelException e) {
-      assertThat(e).hasMessageContaining("failed to parse expression 'cellInput == \"bronze\"'");
-    }
-  }
-
-  @Test
-  @DecisionResource(resource = DMN_12)
-  public void testFeelInputExpression_Dmn12() {
-    testFeelInputExpression();
-  }
-
-  @Test
-  @DecisionResource(resource = DMN)
-  public void testFeelOutputEntry() {
-    DefaultDmnEngineConfiguration configuration = (DefaultDmnEngineConfiguration) getDmnEngineConfiguration();
-    configuration.setDefaultOutputEntryExpressionLanguage(DefaultDmnEngineConfiguration.FEEL_EXPRESSION_LANGUAGE);
-    DmnEngine engine = configuration.buildEngine();
-
-    variables.putValue("score", 3);
-
-    assertThatDecisionTableResult(engine)
-      .hasSingleResult()
-      .hasSingleEntryTyped(Variables.stringValue("a"));
-  }
-
-  @Test
-  @DecisionResource(resource = DMN)
-  public void testFeelInputExpressionWithCustomEngine() {
-    DefaultDmnEngineConfiguration configuration = (DefaultDmnEngineConfiguration) getDmnEngineConfiguration();
-    configuration.setDefaultInputExpressionExpressionLanguage(DefaultDmnEngineConfiguration.FEEL_EXPRESSION_LANGUAGE);
-    DmnEngine engine = configuration.buildEngine();
-
-    DmnDecisionResult decisionResult = engine.evaluateDecision(decision, Variables.createVariables().putValue("score", 3));
-
-    assertThat((String)decisionResult.getSingleEntry()).isEqualTo("a");
-  }
-
-  @Test
-  @DecisionResource(resource = DMN)
-  public void testFeelOutputEntryWithCustomEngine() {
-    DefaultDmnEngineConfiguration configuration = (DefaultDmnEngineConfiguration) getDmnEngineConfiguration();
-    configuration.setDefaultOutputEntryExpressionLanguage(DefaultDmnEngineConfiguration.FEEL_EXPRESSION_LANGUAGE);
-    DmnEngine engine = configuration.buildEngine();
-
-    DmnDecisionResult decisionResult = engine.evaluateDecision(decision, Variables.createVariables().putValue("score", 3));
-
-    assertThat((String)decisionResult.getSingleEntry()).isEqualTo("a");
-  }
-
-  @Test
-  @DecisionResource
-  public void testUnaryTest() {
+  @DecisionResource(resource = "scala_unary_builtin_function.dmn")
+  public void shouldEvaluateBuiltInFunctionInUnaryTest() {
     variables.putValue("integerString", "45");
 
     assertThatDecisionTableResult()
@@ -195,76 +108,43 @@ public class NewScalaFeelBehaviorTest extends DmnEngineTest {
   }
 
   @Test
-  @DecisionResource(resource = DMN)
-  public void testFeelInputExpression() {
-    DefaultDmnEngineConfiguration configuration = (DefaultDmnEngineConfiguration) getDmnEngineConfiguration();
-    configuration.setDefaultInputExpressionExpressionLanguage(DefaultDmnEngineConfiguration.FEEL_EXPRESSION_LANGUAGE);
-    DmnEngine engine = configuration.buildEngine();
-
-    variables.putValue("score", 3);
-
-    assertThatDecisionTableResult(engine)
-      .hasSingleResult()
-      .hasSingleEntryTyped(Variables.stringValue("a"));
-  }
-
-  @Test
-  @DecisionResource(resource = DATE_TABLE_INPUT_CLAUSE_TYPE_NON_CONVERSION)
-  public void shouldEvaluateLocalDateWithTable_NonInputClauseType() {
+  @DecisionResource(resource = "scala_compare_date_untyped.dmn")
+  public void shouldEvaluateLocalDate_NonInputClauseType() {
     // given
     getVariables()
       .putValue("date1", LocalDateTime.now());
 
     // when
-    String foo = evaluateDecision().getSingleEntry();
+    String result = evaluateDecision().getSingleEntry();
 
     // then
-    assertThat(foo).isEqualTo("not ok");
+    assertThat(result).isEqualTo("not ok");
   }
 
-  /* TODO: rewrite to blackbox test */
   @Test
-  public void shouldEvaluateLocalDateWithScalaEngine_InputClauseTypeDate() {
+  @DecisionResource(resource = "scala_literal_expression.dmn")
+  public void shouldEvaluateToUtilDateWithLiteralExpression() {
     // given
-    VariableMap variables = getVariables()
-      .putValue("date1", LocalDateTime.now());
-
-    // when
-    boolean result = scalaFeelEngine.evaluateSimpleUnaryTests("<=date and time(\"2014-11-30T12:00:00\")",
-      "date1", variables.asVariableContext());
-
-    // then
-    assertThat(result).isFalse();
-  }
-
-  /* TODO: rewrite to blackbox test */
-  @Test
-  public void shouldEvaluateJodaLocalDateWithScalaEngine_InputClauseTypeDate() {
-    // given
-    VariableMap variables = getVariables()
-      .putValue("date1", org.joda.time.LocalDateTime.now());
-
-    // when
-    boolean result = scalaFeelEngine.evaluateSimpleUnaryTests("<=date and time(\"2014-11-30T12:00:00\")",
-      "date1", variables.asVariableContext());
-
-    // then
-    assertThat(result).isFalse();
-  }
-
-  /* TODO: rewrite to blackbox test */
-  @Test
-  public void shouldEvaluateUtilDateWithScalaEngine_InputClauseTypeDate() {
-    // given
-    VariableMap variables = getVariables()
+    getVariables()
       .putValue("date1", new Date());
 
     // when
-    boolean result = scalaFeelEngine.evaluateSimpleUnaryTests("<=date and time(\"2014-11-30T12:00:00\")",
-      "date1", variables.asVariableContext());
+    Object result = evaluateDecision().getSingleEntry();
 
     // then
-    assertThat(result).isFalse();
+    assertThat(result).isInstanceOf(Date.class);
+  }
+
+  @Test
+  @DecisionResource(resource = "scala_date_typed_output.dmn")
+  public void shouldEvaluateToUtilDateForTypedOutputClause() {
+    // given
+
+    // when
+    Date result = evaluateDecision().getSingleEntry();
+
+    // then
+    assertThat(result).isEqualTo("2019-08-08T22:22:22");
   }
 
 }

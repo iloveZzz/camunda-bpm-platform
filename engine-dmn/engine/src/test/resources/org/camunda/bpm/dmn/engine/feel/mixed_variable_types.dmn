@@ -6,32 +6,32 @@
   <decision id="decision" name="decision">
     <decisionTable id="decisionTable">
       <input id="string">
-        <inputExpression id="inputExpression1">
+        <inputExpression id="inputExpression1" expressionLanguage="juel">
           <text>stringInput</text>
         </inputExpression>
       </input>
       <input id="number">
-        <inputExpression id="inputExpression2">
+        <inputExpression id="inputExpression2" expressionLanguage="juel">
           <text>numberInput</text>
         </inputExpression>
       </input>
       <input id="boolean">
-        <inputExpression id="inputExpression3">
+        <inputExpression id="inputExpression3" expressionLanguage="juel">
           <text>booleanInput</text>
         </inputExpression>
       </input>
       <output id="output" name="output" />
       <rule id="stringRule">
-        <inputEntry id="stringInput">
+        <inputEntry id="stringInput" expressionLanguage="feel">
           <text>"camunda"</text>
         </inputEntry>
-        <inputEntry id="numberInput">
+        <inputEntry id="numberInput" expressionLanguage="feel">
           <text>>= 12</text>
         </inputEntry>
-        <inputEntry id="booleanInput">
+        <inputEntry id="booleanInput" expressionLanguage="feel">
           <text>true</text>
         </inputEntry>
-        <outputEntry id="outputEntry">
+        <outputEntry id="outputEntry" expressionLanguage="juel">
           <text>true</text>
         </outputEntry>
       </rule>

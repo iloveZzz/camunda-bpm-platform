@@ -23,7 +23,6 @@ import org.camunda.bpm.dmn.engine.impl.DefaultDmnEngineConfiguration;
 import org.camunda.bpm.dmn.engine.test.DecisionResource;
 import org.camunda.bpm.dmn.engine.test.DmnEngineTest;
 import org.camunda.bpm.dmn.feel.impl.FeelException;
-import org.camunda.bpm.dmn.feel.impl.juel.FeelEngineFactoryImpl;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.feel.integration.CamundaFeelEngineFactory;
 import org.junit.Rule;
@@ -47,7 +46,17 @@ public class BreakingScalaFeelBehaviorTest extends DmnEngineTest {
   }
 
   @Test
-  @DecisionResource(resource = "FeelLegacy_equals_boolean.dmn")
+  @DecisionResource(resource = "breaking_unary_test_compare_short_untyped.dmn")
+  public void shouldCompareShortUntyped() {
+    variables.putValue("numberInput", (short)5);
+
+    assertThatDecisionTableResult()
+      .hasSingleResult()
+      .hasSingleEntry(true);
+  }
+
+  @Test
+  @DecisionResource(resource = "breaking_unary_test_boolean.dmn")
   public void shouldEqualBoolean() {
     DefaultDmnEngineConfiguration configuration = (DefaultDmnEngineConfiguration) getDmnEngineConfiguration();
     DmnEngine engine = configuration.buildEngine();
@@ -58,7 +67,7 @@ public class BreakingScalaFeelBehaviorTest extends DmnEngineTest {
   }
 
   @Test
-  @DecisionResource(resource = "FeelLegacy_compareDate_withTimeZone_non_typed.dmn")
+  @DecisionResource(resource = "breaking_compare_date_with_time_zone_untyped.dmn")
   public void shouldEvaluateTimezoneComparisonWithTypedValue() {
     // given
     variables.putValue("date1", Variables.dateValue(new Date()));
@@ -74,7 +83,7 @@ public class BreakingScalaFeelBehaviorTest extends DmnEngineTest {
   }
 
   @Test
-  @DecisionResource(resource = "FeelLegacy_compareDate_withTimeZone_non_typed.dmn")
+  @DecisionResource(resource = "breaking_compare_date_with_time_zone_untyped.dmn")
   public void shouldEvaluateTimezoneComparisonWithDate() {
     variables.putValue("date1", new Date());
 
@@ -89,7 +98,7 @@ public class BreakingScalaFeelBehaviorTest extends DmnEngineTest {
   }
 
   @Test
-  @DecisionResource(resource = "FeelLegacy_SingleQuotes.dmn")
+  @DecisionResource(resource = "breaking_single_quotes.dmn")
   public void shouldUseSingleQuotesInStringLiterals() {
     // given
     DefaultDmnEngineConfiguration configuration = (DefaultDmnEngineConfiguration) getDmnEngineConfiguration();
@@ -106,7 +115,7 @@ public class BreakingScalaFeelBehaviorTest extends DmnEngineTest {
   /* TODO move to feel-scala-spin artifact
   @Ignore("SPIN handling has changed")
   @Test
-  @DecisionResource(resource = "FeelLegacy_SPIN.dmn")
+  @DecisionResource(resource = "breaking_spin.dmn")
   public void shouldHandleSpinCorrectly() {
     DefaultDmnEngineConfiguration configuration = (DefaultDmnEngineConfiguration) getDmnEngineConfiguration();
     DmnEngine engine = configuration.buildEngine();
@@ -119,7 +128,7 @@ public class BreakingScalaFeelBehaviorTest extends DmnEngineTest {
   }
 
   @Test
-  @DecisionResource(resource = "FeelLegacy_SPIN_Context.dmn")
+  @DecisionResource(resource = "breaking_spin_context.dmn")
   public void shouldUseContextConversionForSpinValue() {
     DefaultDmnEngineConfiguration configuration = (DefaultDmnEngineConfiguration) getDmnEngineConfiguration();
     DmnEngine engine = configuration.buildEngine();
