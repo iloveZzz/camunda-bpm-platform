@@ -9,7 +9,7 @@
     <version>7.13.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>feel-spin</artifactId>
+  <artifactId>camunda-engine-feel-spin</artifactId>
 
   <name>FEEL Scala - Camunda Spin Integration</name>
 
