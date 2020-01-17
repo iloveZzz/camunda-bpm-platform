@@ -16,26 +16,6 @@
  */
 package org.camunda.bpm.dmn.engine.feel;
 
-import org.camunda.bpm.dmn.engine.DmnDecisionResult;
-import org.camunda.bpm.dmn.engine.DmnEngine;
-import org.camunda.bpm.dmn.engine.DmnEngineConfiguration;
-import org.camunda.bpm.dmn.engine.impl.DefaultDmnEngineConfiguration;
-import org.camunda.bpm.dmn.engine.test.DecisionResource;
-import org.camunda.bpm.dmn.engine.test.DmnEngineTest;
-import org.camunda.bpm.dmn.feel.impl.FeelException;
-import org.camunda.bpm.engine.variable.VariableMap;
-import org.camunda.bpm.engine.variable.Variables;
-import org.camunda.feel.integration.CamundaFeelEngine;
-import org.camunda.feel.integration.CamundaFeelEngineFactory;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.camunda.bpm.dmn.engine.feel.FeelBehaviorTest.DATE_TABLE_INPUT_CLAUSE_TYPE_NON_CONVERSION;
@@ -43,6 +23,26 @@ import static org.camunda.bpm.dmn.engine.feel.FeelBehaviorTest.DMN;
 import static org.camunda.bpm.dmn.engine.feel.FeelBehaviorTest.DMN_12;
 import static org.camunda.bpm.dmn.engine.feel.FeelBehaviorTest.EMPTY_EXPRESSIONS_DMN;
 import static org.camunda.bpm.dmn.engine.util.DmnExampleVerifier.assertExample;
+
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.Date;
+
+import org.camunda.bpm.dmn.engine.DmnDecisionResult;
+import org.camunda.bpm.dmn.engine.DmnEngine;
+import org.camunda.bpm.dmn.engine.DmnEngineConfiguration;
+import org.camunda.bpm.dmn.engine.impl.DefaultDmnEngineConfiguration;
+import org.camunda.bpm.dmn.engine.test.DecisionResource;
+import org.camunda.bpm.dmn.engine.test.DmnEngineTest;
+import org.camunda.bpm.dmn.feel.impl.FeelException;
+import org.camunda.bpm.dmn.feel.impl.scala.CamundaFeelEngine;
+import org.camunda.bpm.dmn.feel.impl.scala.CamundaFeelEngineFactory;
+import org.camunda.bpm.engine.variable.VariableMap;
+import org.camunda.bpm.engine.variable.Variables;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class NewScalaFeelBehaviorTest extends DmnEngineTest {
 

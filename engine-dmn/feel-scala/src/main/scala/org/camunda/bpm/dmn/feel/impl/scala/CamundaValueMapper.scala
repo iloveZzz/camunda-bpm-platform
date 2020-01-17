@@ -1,4 +1,4 @@
-package org.camunda.feel.integration
+package org.camunda.bpm.dmn.feel.impl.scala
 
 import java.time._
 

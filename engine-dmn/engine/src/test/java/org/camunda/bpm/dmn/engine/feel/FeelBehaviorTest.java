@@ -16,18 +16,7 @@
  */
 package org.camunda.bpm.dmn.engine.feel;
 
-import org.camunda.bpm.dmn.engine.DmnDecisionResult;
-import org.camunda.bpm.dmn.engine.DmnEngine;
-import org.camunda.bpm.dmn.engine.DmnEngineConfiguration;
-import org.camunda.bpm.dmn.engine.impl.DefaultDmnEngineConfiguration;
-import org.camunda.bpm.dmn.engine.test.DecisionResource;
-import org.camunda.bpm.dmn.engine.test.DmnEngineTest;
-import org.camunda.bpm.dmn.feel.impl.juel.FeelEngineFactoryImpl;
-import org.camunda.bpm.engine.variable.Variables;
-import org.camunda.feel.integration.CamundaFeelEngineFactory;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -36,7 +25,18 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.camunda.bpm.dmn.engine.DmnDecisionResult;
+import org.camunda.bpm.dmn.engine.DmnEngine;
+import org.camunda.bpm.dmn.engine.DmnEngineConfiguration;
+import org.camunda.bpm.dmn.engine.impl.DefaultDmnEngineConfiguration;
+import org.camunda.bpm.dmn.engine.test.DecisionResource;
+import org.camunda.bpm.dmn.engine.test.DmnEngineTest;
+import org.camunda.bpm.dmn.feel.impl.juel.FeelEngineFactoryImpl;
+import org.camunda.bpm.dmn.feel.impl.scala.CamundaFeelEngineFactory;
+import org.camunda.bpm.engine.variable.Variables;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 @RunWith(Parameterized.class)
 public class FeelBehaviorTest extends DmnEngineTest {

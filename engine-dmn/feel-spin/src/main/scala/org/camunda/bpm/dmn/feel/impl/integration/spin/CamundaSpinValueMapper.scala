@@ -1,4 +1,4 @@
-package org.camunda.feel.integration
+package org.camunda.bpm.dmn.feel.impl.integration.spin
 
 import org.camunda.feel.interpreter._
 import org.camunda.feel.spi._

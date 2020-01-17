@@ -16,17 +16,17 @@
  */
 package org.camunda.bpm.dmn.engine.feel;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.camunda.bpm.dmn.engine.feel.FeelBehaviorTest.DATE_TABLE_INPUT_CLAUSE_TYPE_DATE_CONVERSION;
+
+import java.util.Date;
+
 import org.camunda.bpm.dmn.engine.DmnEngineConfiguration;
 import org.camunda.bpm.dmn.engine.impl.DefaultDmnEngineConfiguration;
 import org.camunda.bpm.dmn.engine.test.DecisionResource;
 import org.camunda.bpm.dmn.engine.test.DmnEngineTest;
-import org.camunda.feel.integration.CamundaFeelEngineFactory;
+import org.camunda.bpm.dmn.feel.impl.scala.CamundaFeelEngineFactory;
 import org.junit.Test;
-
-import java.util.Date;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.camunda.bpm.dmn.engine.feel.FeelBehaviorTest.DATE_TABLE_INPUT_CLAUSE_TYPE_DATE_CONVERSION;
 
 public class NiceToHaveFeelBehaviorTest extends DmnEngineTest {
 

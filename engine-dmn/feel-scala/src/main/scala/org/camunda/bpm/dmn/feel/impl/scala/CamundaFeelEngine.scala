@@ -1,4 +1,4 @@
-package org.camunda.feel.integration
+package org.camunda.bpm.dmn.feel.impl.scala
 
 import org.camunda.bpm.dmn.feel.impl.FeelException
 import org.camunda.bpm.engine.variable.context.VariableContext

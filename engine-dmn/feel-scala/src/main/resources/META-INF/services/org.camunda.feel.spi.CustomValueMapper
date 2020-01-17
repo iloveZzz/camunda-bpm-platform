@@ -1,2 +1,2 @@
 org.camunda.feel.spi.JavaValueMapper
-org.camunda.feel.integration.CamundaValueMapper
+org.camunda.bpm.dmn.feel.impl.scala.CamundaValueMapper
